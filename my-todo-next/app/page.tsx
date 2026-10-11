@@ -1,10 +1,17 @@
-'use client';
+"use client";
 
-import AddTask from './Components/AddTask'
-import { useState } from 'react'
+import AddTask from "./Components/AddTask";
+import { useState } from "react";
+
+type Todo = {
+  text: string;
+  completed: boolean;
+};
 
 export default function Home() {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const todosLength = todos.length;
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -16,9 +23,15 @@ export default function Home() {
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Manage your daily tasks
           </p>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">You have 0 tasks today</p>
+          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+            {todosLength === 0
+              ? "No tasks yet"
+              : todosLength === 1
+                ? `You have ${todosLength} task today`
+                : `You have ${todosLength} tasks today`}
+          </p>
         </div>
-        <AddTask todos={todos} setTodos={setTodos}/>
+        <AddTask todos={todos} setTodos={setTodos} />
       </main>
     </div>
   );

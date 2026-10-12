@@ -4,6 +4,7 @@ import AddTask from "./Components/AddTask";
 import { useState } from "react";
 
 type Todo = {
+  id:string;
   text: string;
   completed: boolean;
 };

@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { CheckSquare } from "@deemlol/next-icons";
+import { Trash2 } from "@deemlol/next-icons";
 
 type Todo = {
+  id: string;
   text: string;
   completed: boolean;
 };
@@ -17,16 +20,26 @@ export default function AddTask({ todos, setTodos }: AddTaskProps) {
 
   const addTask = () => {
     if (task.trim()) {
-      setTodos([...todos, {
-        text:task.trim(),
-        completed:false
-      }]);
+      setTodos([
+        ...todos,
+        {
+          id: crypto.randomUUID(),
+          text: task.trim(),
+          completed: false,
+        },
+      ]);
       setTask("");
     }
   };
 
-  const deleteTask = (index: number) => {
-    setTodos(todos.filter((todo, i) => i !== index));
+  const deleteTask = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  const toggleTodo = (id: string) => {
+    todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+    );
   };
 
   return (
@@ -45,10 +58,15 @@ export default function AddTask({ todos, setTodos }: AddTaskProps) {
         Add
       </button>
       <ul>
-        {todos.map((todo, index) => (
-          <li key={index}>
+        {todos.map((todo) => (
+          <li key={todo.id}>
             {todo.text}
-            <button onClick={() => deleteTask(index)}>Delete</button>
+            <button onClick={() => toggleTodo(todo.id)}>
+              <CheckSquare color="#3b82f6" size={20} strokeWidth={1.5} />
+            </button>
+            <button onClick={() => deleteTask(todo.id)}>
+              <Trash2 color="#f63b3b" size={20} strokeWidth={1.5} />
+            </button>
           </li>
         ))}
       </ul>
